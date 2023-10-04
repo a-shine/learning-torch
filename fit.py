@@ -1,14 +1,21 @@
-import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
 import os
 import time
 
+import torch
+import torch.nn as nn
+import torch.backends.mps
+from torch.utils.data import DataLoader
+
 from architecture import NeuralNetwork
-from data_load import load_data
-from pre_process import pre_process_datasets
+from data_load import load
+from data_pre_process import pre_process_datasets
 
 # Parameters
+# https://ai.stackexchange.com/questions/8560/how-do-i-choose-the-optimal-batch-size
+# https://stats.stackexchange.com/questions/164876/what-is-the-trade-off-between-batch-size-and-number-of-iterations-to-train-a-neu
+# It has been observed that with larger batch there is a significant degradation in the quality of the model, as
+# measured by its ability to generalize i.e. large batch size is better for training but not for generalization
+# (overfitting)
 BATCH_SIZE = 8 ** 2
 EPOCHS = 20
 
@@ -18,28 +25,13 @@ device = ("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.i
 print(f"Training/fitting using {device} device")
 
 # Load the MNIST dataset
-training_dataset, testing_dataset = load_data(visualise=True)
+training_dataset, testing_dataset = load(verbose=True, visualise=False)
 
 # Pre-process the data (i.e. flatten the images into a single vector of pixels)
 processed_training_data, processed_test_data = pre_process_datasets(training_dataset, testing_dataset, verbose=True)
 
 
-# Create a data loader to handle loading data in and out of memory Optimal batch size is based on the GPU memory
-# available and the variance of the data
-
-
-# https://stats.stackexchange.com/questions/164876/what-is-the-trade-off-between-batch-size-and-number-of-iterations-to-train-a-neu
-# It has been observed that with larger batch there is a significant degradation in the quality of the model, as
-# measured by its ability to generalize i.e. large batch size is better for training but not for generalization
-# (overfitting)
-
-def suggested_batch_size() -> int:
-    """
-    Suggests a batch size based on the GPU memory available and the variance of the data
-    :return: suggested batch size
-    """
-    pass
-
+# Create a data loader to handle loading data in and out of memory in batches
 
 # Create data loaders.
 train_dataloader = DataLoader(processed_training_data, batch_size=BATCH_SIZE)
@@ -50,11 +42,6 @@ for X, y in test_dataloader:
     print(f"Shape of X [N, W*H]: {X.shape}")
     print(f"Shape of y: {y.shape} {y.dtype}")
     break
-
-# flatten the width and height dimensions of the image into a single vector of pixels
-
-
-# Define model
 
 # Create an instance of the model and move it to the device (GPU or CPU)
 model = NeuralNetwork((28 * 28), 10).to(device)

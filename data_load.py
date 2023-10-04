@@ -1,9 +1,10 @@
-from torchvision import datasets
-import matplotlib.pyplot as plt
 import random
 
+import matplotlib.pyplot as plt
+from torchvision import datasets
 
-def load_data(visualise=False) -> (datasets.MNIST, datasets.MNIST):
+
+def load(verbose=False, visualise=False) -> (datasets.MNIST, datasets.MNIST):
     """
     Loads the MNIST dataset
     :return: training dataset and test dataset
@@ -11,29 +12,32 @@ def load_data(visualise=False) -> (datasets.MNIST, datasets.MNIST):
     training_dataset = datasets.MNIST(root='./data', train=True, download=True)
     test_dataset = datasets.MNIST(root='./data', train=False, download=True)
 
+    if verbose:
+        # How much data?
+        print(f"Length of training dataset: {len(training_dataset)}")
+        print(f"Length of test dataset: {len(test_dataset)}")
+
+        # What is it?
+        print(f"First input entry: {training_dataset[0][0]}")
+        print(f"First label entry: {training_dataset[0][1]}")
+
+    # What does it look like?
     if visualise:
-        explore_data(training_dataset, test_dataset)
+        plot_random(training_dataset)
 
     return training_dataset, test_dataset
 
 
-def explore_data(training_dataset: datasets.MNIST, test_dataset: datasets.MNIST):
+def plot_random(dataset: datasets.MNIST):
     """
-    Explores the MNIST dataset to see what we're working with
-    :param training_dataset: training dataset
-    :param test_dataset: test dataset
+    Plot 5 random images from the dataset. Warning: this function will block the program until the plot is closed.
+    :param dataset: the dataset from which to pick 5 random images
     """
-    # How much data?
-    print(f"Length of training dataset: {len(training_dataset)}")
-    print(f"Length of test dataset: {len(test_dataset)}")
-    print(f"First input entry: {training_dataset[0][0]}")
-    print(f"First label entry: {training_dataset[0][1]}")
-
     # What does the raw data look like?
     plt.figure(figsize=(1, 5))
     for i in range(5):
-        random_index = random.randint(0, len(training_dataset) - 1)  # Take an image at random from the training dataset
-        image, label = training_dataset[random_index]  # Training dataset is a tuple of (image, label)
+        random_index = random.randint(0, len(dataset) - 1)  # Take an image at random from the training dataset
+        image, label = dataset[random_index]  # Training dataset is a tuple of (image, label)
         plt.subplot(1, 5, i + 1)
         plt.imshow(image, cmap='gray')
         plt.title(label)

@@ -1,4 +1,4 @@
-import torch
+import torch.utils.data
 from torchvision.transforms import ToTensor, Compose
 
 # Data processing pipeline
