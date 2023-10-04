@@ -6,7 +6,7 @@ import time
 
 from architecture import NeuralNetwork
 from data_load import load_data
-from pre_process import pre_process
+from pre_process import pre_process_datasets
 
 # Parameters
 BATCH_SIZE = 8 ** 2
@@ -21,7 +21,7 @@ print(f"Training/fitting using {device} device")
 training_dataset, testing_dataset = load_data(visualise=True)
 
 # Pre-process the data (i.e. flatten the images into a single vector of pixels)
-processed_training_data, processed_test_data = pre_process(training_dataset, testing_dataset, verbose=True)
+processed_training_data, processed_test_data = pre_process_datasets(training_dataset, testing_dataset, verbose=True)
 
 
 # Create a data loader to handle loading data in and out of memory Optimal batch size is based on the GPU memory
