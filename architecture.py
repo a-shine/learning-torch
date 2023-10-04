@@ -9,9 +9,7 @@ class NeuralNetwork(nn.Module):
         self.net = nn.Sequential(
             nn.Linear(input_size, 512),
             nn.ReLU(),
-            nn.Linear(512, 764),
-            nn.ReLU(),
-            nn.Linear(764, 512),
+            nn.Linear(512, 512),
             nn.ReLU(),
             nn.Linear(512, output_size)
         )

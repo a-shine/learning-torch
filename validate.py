@@ -9,7 +9,7 @@ from pre_process import TRANSFORMS
 MODEL_PATH = "models/model_20231004-093408.pth"
 
 device = ("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-print(f"Using {device} device")
+print(f"Running model using {device} device")
 
 # Load the test dataset
 _, test_dataset = load_data()

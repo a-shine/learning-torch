@@ -10,7 +10,7 @@ from pre_process import pre_process_datasets
 
 # Parameters
 BATCH_SIZE = 8 ** 2
-EPOCHS = 50
+EPOCHS = 20
 
 # Detect device for training and running the model
 # Installing CUDA - https://docs.nvidia.com/cuda/cuda-quick-start-guide/
