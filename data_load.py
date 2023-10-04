@@ -26,8 +26,8 @@ def explore_data(training_dataset: datasets.MNIST, test_dataset: datasets.MNIST)
     # How much data?
     print(f"Length of training dataset: {len(training_dataset)}")
     print(f"Length of test dataset: {len(test_dataset)}")
-    print(f"Shape of single input: {training_dataset[0][0].shape}")
-    print(f"Shape of single label: {training_dataset[0][1].shape}")
+    print(f"First input entry: {training_dataset[0][0]}")
+    print(f"First label entry: {training_dataset[0][1]}")
 
     # What does the raw data look like?
     plt.figure(figsize=(1, 5))

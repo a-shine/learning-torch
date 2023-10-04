@@ -11,7 +11,6 @@ from pre_process import pre_process
 # Parameters
 BATCH_SIZE = 8 ** 2
 EPOCHS = 50
-LEARNING_RATE = 0.001
 
 # Detect device for training and running the model
 # Installing CUDA - https://docs.nvidia.com/cuda/cuda-quick-start-guide/
@@ -42,14 +41,6 @@ def suggested_batch_size() -> int:
     pass
 
 
-def learning_rate_scheduler() -> float:
-    """
-    Suggests a learning rate based on the batch size
-    :return: suggested learning rate
-    """
-    pass
-
-
 # Create data loaders.
 train_dataloader = DataLoader(processed_training_data, batch_size=BATCH_SIZE)
 test_dataloader = DataLoader(processed_test_data, batch_size=BATCH_SIZE)
@@ -69,7 +60,8 @@ for X, y in test_dataloader:
 model = NeuralNetwork((28 * 28), 10).to(device)
 
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
 
 
 def fit(dataloader, model, loss_fn, optimizer):
