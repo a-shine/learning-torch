@@ -16,8 +16,8 @@ from data_pre_process import pre_process_datasets
 # It has been observed that with larger batch there is a significant degradation in the quality of the model, as
 # measured by its ability to generalize i.e. large batch size is better for training but not for generalization
 # (overfitting)
-BATCH_SIZE = 8 ** 2
-EPOCHS = 20
+BATCH_SIZE = 2 ** 5
+EPOCHS = 15
 
 # Detect device for training and running the model
 # Installing CUDA - https://docs.nvidia.com/cuda/cuda-quick-start-guide/
@@ -47,7 +47,7 @@ for X, y in test_dataloader:
 model = NeuralNetwork((28 * 28), 10).to(device)
 
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)  # start with a high learning rate and allow it to decay
 scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
 
 
